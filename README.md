@@ -3,7 +3,7 @@ A simple IRC bot in C# that connects, authenticates and posts an hourly message.
 
 Functionality ideas to consider adding:
 
-!gamble - returns a random word based upon the user's input
+!gamble - returns a random word based upon the user's input - Done
 
 !events - returns the current events list e.g. Fight Night 25 Lordy vs Yuzgen 9pm Tonight live on Twitch.tv/yuzgen
 
