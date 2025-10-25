@@ -15,11 +15,11 @@ namespace MedalBot
 
         private static readonly string server = "irc.gamesurge.net";
         private static readonly int port = 6667;
-        private static readonly string nick = "CO2";
-        private static readonly string user = "CO2";
-        private static readonly string pass = "1FpyDmQe";
-        private static readonly string channel = "#cncnet-ra";
-        private static readonly string channelPass = "ra1-derp";
+        private static readonly string nick = "";
+        private static readonly string user = "";
+        private static readonly string pass = "";
+        private static readonly string channel = "";
+        private static readonly string channelPass = "";
 
         private static readonly string adminsFile = "admins.txt";
         private static readonly string voicedFile = "voiced.txt";
