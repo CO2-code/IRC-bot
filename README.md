@@ -1,3 +1,193 @@
+
+MedalBot – IRC Utility Bot (C#)
+
+Overview
+
+MedalBot is a lightweight IRC bot written in C# for GameSurge and CnCNet channels.
+It supports modular commands, admin-only actions, and automatic user tracking.
+All commands are handled through individual .cs files located in the Commands folder.
+
+
+---
+
+1. Features
+
+Command System:
+Each command is defined in a separate class implementing ICommand.cs.
+Easily add, remove, or modify commands without touching the core logic.
+
+Admin Commands:
+Admins are defined in admins.txt.
+Example:
+
+N8Diaz
+CO2
+
+Auto Voice System:
+
+When an admin uses !medal nick <type>, the bot saves the user’s hostmask in voiced.txt.
+
+It auto-voices recognized players upon join.
+
+Supported medal types:
+
+Platinum = 1
+Gold     = 2
+Silver   = 3
+
+
+Custom Messages:
+
+The bot can send automated messages read from messages.txt.
+
+Each message ends with a number that defines its repeat interval (in minutes).
+Example:
+
+Remember to join the official ladder! 50
+Check out www.cncnet.org for updates! 100
+
+
+Future Feature – Seen Tracking (planned):
+
+Planned feature to track the last time a user was active.
+
+Will store timestamps in seen.txt for future use.
+
+
+
+
+---
+
+2. Folder Structure
+
+MedalBot/
+│
+├── Program.cs              → Main bot connection & event logic
+├── CommandManager.cs        → Handles command registration and execution
+├── ICommand.cs              → Base interface for all commands
+│
+├── Commands/
+│   ├── GambleCommand.cs     → !gamble <options>
+│   ├── MedalCommand.cs      → !medal nick <type>, !unmedal nick
+│   └── (SeenCommand.cs)     → (future command)
+│
+├── admins.txt               → List of admin nicks (one per line)
+├── voiced.txt               → Saved hostmasks for autovoice
+├── messages.txt             → Timed broadcast messages
+└── ReadMe.txt               → (this file)
+
+
+---
+
+3. Commands
+
+Command	Description	Example	Notes
+
+!gamble <word1> <word2> ...	Picks a random option	!gamble Coke Pepsi	Works for all users
+!medal <nick> <type>	Awards a medal and adds user to auto-voice	!medal N8Diaz Gold	Admins only
+!unmedal <nick>	Removes a medal and unvoices the user	!unmedal CO2	Admins only
+(Planned) !seen <nick>	Shows when a user was last active	(Not yet implemented)	Future update
+
+
+
+---
+
+4. Configuration Files :
+
+admins.txt
+
+List of users allowed to run admin commands.
+Each line should contain only the nickname.
+
+voiced.txt
+
+Automatically maintained by the bot.
+Contains the hostmasks of users who should be voiced upon joining.
+
+messages.txt
+
+List of messages to broadcast automatically.
+Each message ends with a number (minutes) indicating when it should repeat.
+
+Example:
+
+Welcome to CnCNet Red Alert 1 Ladder! 50
+Remember to visit www.cncnet.org/community for news! 100
+
+
+---
+
+5. Adding New Commands :
+
+1. Create a new .cs file inside the Commands folder (e.g., PingCommand.cs).
+
+
+2. Implement the ICommand interface:
+
+public class PingCommand : ICommand
+{
+    public string Name => "ping";
+    public (bool handled, string response) Process(string senderNick, string message, string fullLine)
+    {
+        if (!message.StartsWith("!ping", StringComparison.OrdinalIgnoreCase))
+            return (false, null);
+        return (true, $"{senderNick}, pong!");
+    }
+}
+
+
+3. Register it in CommandManager.cs:
+
+_commands.Add(new PingCommand());
+
+
+---
+
+6. Compilation & Run
+
+1. Open the project in Visual Studio 2022+ or any C# IDE.
+
+
+2. Restore dependencies (standard .NET libraries only).
+
+
+3. Build the project.
+
+
+4. Run the generated .exe.
+
+
+5. The bot will connect to the configured IRC server and start listening for messages.
+
+
+---
+
+7. Notes
+
+The bot ignores anything before ! in IRC messages, so it can safely read messages like:
+
+ PRIVMSG #cncnet-ra :♥10!gamble 1 2
+
+and still recognize the command.
+
+Always run the bot from the same directory so it can access its .txt files.
+
+All times are stored in UTC.
+
+
+---
+
+8. Credits
+
+Developed for CnCNet / Red Alert 1 community
+Initial design & command system by (CO2.
+Code examples adapted (Original Code) from N8Diaz Bot Framework. (N8sBOT)
+
+
+
+
+Original ReadMe :
+
 # IRC-bot
 A simple IRC bot in C# that connects, authenticates and posts an hourly message.
 
